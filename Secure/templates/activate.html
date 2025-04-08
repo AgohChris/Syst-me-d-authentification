@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activation de votre compte</title>
+    <link rel="stylesheet" href="{% static 'css/activate.css' %}">
+
+</head>
+<body>
+    <div class="container">
+        <h1>Un code d'activation à été envoyé à l'adresse mail {{user.user_email}}</h1>
+
+        <!-- {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <p class="message {{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+         -->
+        <form method="POST" id="activationForm">
+            {% csrf_token %}
+            <label for="email">Adresse e-mail :</label>
+            <input type="email" name="email" id="email" placeholder="Entrez votre e-mail" required>
+            
+            <label for="activation_code">Code d'activation :</label>
+            <input type="text" name="activation_code" id="activation_code" placeholder="Entrez le code d'activation" maxlength="6" required>
+            
+            <button type="submit">Activer</button>
+        </form>
+        <div id="message"></div>
+    </div>
+
+    <script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>
