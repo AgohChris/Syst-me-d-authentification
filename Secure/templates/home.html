@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static  'css/home.css' %}" />
+    
+</head>
+
+
+<body>
+    {% if user.is_authenticated == True %}
+    <h1>Bonjour {{user.username}}</h1>
+    <h3>Voici vos informations :</h3>
+    <ul>
+        <li>Nom d'utilisateur : {{user.username}} </li>
+        <li>Email : {{user.email}}</li>
+        <li>Date de création du compte : {{ user.date_joined }}</li>
+        <a href="{% url 'logout' %}">Se déconnecter</a>
+    </ul>
+
+
+    {% else %}
+    
+        <nav>
+            <ul class="list-bar">
+                <li><a href="#">Uber</a></li>
+                <li></li>
+                <li>
+                    <ul class="right-side">
+                        <li><a href="#">Log in</a></li>
+                        <li><a href="#">Sign up</a></li>
+                        <li><button><svg width="16" height="16" viewBox="0 0 24 24" fill="none" color="white"><path d="M2 6h20v3H2V6Z" fill="currentColor"></path><path d="M2 15h20v3H2v-3Z" fill="currentColor"></path></svg></button></li>
+                    </ul>
+                </li>
+            </ul> 
+        </nav>
+
+
+        <div class="bg-1">
+            <div class="container">
+                <input type="radio" name="input-1" id="input-1">
+                <input type="radio" name="input-1" id="input-2">
+                <input type="radio" name="input-1" id="input-3">
+                <div class="flex">
+                    <label class="inner-flex flex-1" for="input-1">
+                        <img src="https://www.uber-assets.com/image/upload/v1542252540/assets/6d/87af17-3970-4d01-8936-1b0ba102ea6e/original/car-front-outlined.svg" alt="Car" aria-hidden="true" >
+                        <span>Ride</span>
+                    </label>
+                    <label class="inner-flex flex-2" for="input-2">
+                        <img src="https://www.uber-assets.com/image/upload/v1558389718/assets/8e/33c8c0-f7e9-467c-924b-c70232943a47/original/Earn-filled.svg" alt="Earn" aria-hidden="true">
+                        <span>Drive or <br>deliver</span>
+                    </label>
+                    <label class="inner-flex flex-3" for="input-3">
+                        <img src="https://www.uber-assets.com/image/upload/v1674075480/assets/27/7a50c1-0782-405e-947c-83a2f4d78137/original/keys_car_filled.svg" alt="key-car-filled-icon" aria-hidden="true">
+                        <span>Rent your <br> fleet</span>
+                    </label>
+                    <div class="breaker"></div>
+                </div>
+                <div class="content">
+                    <div class="content-1">
+                    <h2 class="text">
+                        Request a ride now
+                    </h2>
+                    <div>
+                        <input type="text" name="pick-loc" id="pick" placeholder="Enter pickup location">
+                        <input type="text" name="drp-loc" id="drop" placeholder="Enter destination">
+                    </div>
+                    <div>
+                        <button type="submit">Request now</button>
+                        <button type="submit">Schedule for later</button>
+                    </div>
+                    </div>
+                    <div class="content-2">
+                    <h2 class="text">
+                        Get in the driver’s <br>seat and get paid
+                    </h2>
+                    <p>Drive on the platform with the largest network of active riders.</p>
+                    <button type="submit">Sign up to drive</button>
+                    <a href="#" id="link">Learn more about driving and delivering</a>
+                    <div class="underline">
+                        <div class="expansion"></div>
+                    </div>
+                    </div>
+                    <div class="content-3">
+                        <h2 class="text">Make money by renting <br>out your car</h2>
+                        <p>Connect with thousands of drivers and earn more per week with Uber’s free fleet management tools.</p>
+                        <button type="button">Get started</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+            
+
+
+
+    {% endif %}
+
+
+</body>
+
+</html>
