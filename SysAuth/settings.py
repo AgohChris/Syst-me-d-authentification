@@ -41,26 +41,25 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Secure',
     
-    # 'django.contrib.sites',  
-    # 'allauth',
-    # 'allauth.account',
-    
-    # Optional -- requires install using `django-allauth[socialaccount]`.
-    # 'allauth.socialaccount',
-    # 'allauth.socialaccount.providers.google',
-    # 'allauth.socialaccount.providers.facebook',
-    # 'allauth.socialaccount.providers.instagram',
-    # 'allauth.socialaccount.providers.linkedin_oauth2',
+     'django.contrib.sites',  
+     'allauth',
+     'allauth.account',
+
+     #Optional -- requires install using `django-allauth[socialaccount]`.
+     'allauth.socialaccount',
+     'allauth.socialaccount.providers.google',
+     'allauth.socialaccount.providers.facebook',
+     'allauth.socialaccount.providers.instagram',
+     'allauth.socialaccount.providers.linkedin_oauth2',
 ]
 
 
-# AUTHENTICATION_BACKENDS = [
-#     # Needed to login by username in Django admin, regardless of `allauth`
-#     'django.contrib.auth.backends.ModelBackend',
-
-#     # `allauth` specific authentication methods, such as login by email
-#     'allauth.account.auth_backends.AuthenticationBackend',
-# ]
+AUTHENTICATION_BACKENDS = [
+     # Needed to login by username in Django admin, regardless of `allauth`
+     'django.contrib.auth.backends.ModelBackend',
+     # `allauth` specific authentication methods, such as login by email
+     'allauth.account.auth_backends.AuthenticationBackend',
+ ]
 
 
 
@@ -115,7 +114,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     
     # Add the account middleware:
-    # "allauth.account.middleware.AccountMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = 'SysAuth.urls'
@@ -143,7 +142,7 @@ WSGI_APPLICATION = 'SysAuth.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql.connector.django',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'authEnter',
         'USER': 'root',
         'PASSWORD': '',
