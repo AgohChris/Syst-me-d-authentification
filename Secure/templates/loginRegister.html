@@ -2,6 +2,7 @@
 <html lang="fr">
     <head>
       {% load static %}
+      {% load socialaccount %}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -45,13 +46,22 @@
 
                             <div class="social-media">
 
-                                <a href="#" class="social-icon">
+                                <a href="{% provider_login_url 'google' %}" class="social-icon">
                                     <i class="fab fa-google"></i>
                                 </a>
 
-                                <a href="#" class="social-icon">
+                                <a href="{% provider_login_url 'linkedin_oauth2' %}" class="social-icon">
                                     <i class="fab fa-linkedin-in"></i>
                                 </a>
+
+                                <a href="{% provider_login_url 'instagram' %}" class="social-icon">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+
+                                <a href="{% provider_login_url 'facebook' %}" class="social-icon">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+
                             </div>
                     </form>
 

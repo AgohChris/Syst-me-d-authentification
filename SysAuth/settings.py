@@ -19,9 +19,8 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    os.getenv("ALLOWED_HOSTS")
+    '*'
 ]
-
 
 # Application definition
 
@@ -47,10 +46,11 @@ INSTALLED_APPS = [
 ]
 
 
-AUTHENTICATION_BACKENDS = [
-    os.getenv("AUTHENTICATION_BACKENDS")
- ]
-
+AUTHENTICATION_BACKENDS = [# Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+    ]
 
 
 # Provider specific settings
@@ -131,7 +131,19 @@ WSGI_APPLICATION = 'SysAuth.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-   os.getenv("DATABASES")
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'authEnter',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    },
+    
+    'sqlite': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 
@@ -152,15 +164,14 @@ DEFAULT_FROM_MAIL = EMAIL_HOST_USER
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
-AUTH_PASSWORD_VALIDATORS = [
-   os.getenv("AUTH_PASSWORD_VALIDATORS")
-]
+AUTH_PASSWORD_VALIDATORS = os.getenv("AUTH_PASSWORD_VALIDATORS")
+
 
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'fr-fr'
+LANGUAGE_CODE = 'en-en'
 
 TIME_ZONE = 'UTC'
 
