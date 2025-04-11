@@ -12,7 +12,8 @@ import random as rd
 
 # @login_required
 def home(request):
-    return render(request, "home.html")
+    user = request.user
+    return render(request, "home.html", {'user': user})
 
 
 

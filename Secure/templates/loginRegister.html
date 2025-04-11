@@ -50,17 +50,27 @@
                                     <i class="fab fa-google"></i>
                                 </a>
 
-                                <a href="{% provider_login_url 'linkedin_oauth2' %}" class="social-icon">
-                                    <i class="fab fa-linkedin-in"></i>
-                                </a>
+                                {% comment %} {% if 'linkedin_oauth2' in socialaccount.providers %}
 
-                                <a href="{% provider_login_url 'instagram' %}" class="social-icon">
-                                    <i class="fab fa-instagram"></i>
-                                </a>
+                                    <a href="{% provider_login_url 'linkedin_oauth2' %}" class="social-icon">
+                                        <i class="fab fa-linkedin-in"></i>
+                                    </a>
 
-                                <a href="{% provider_login_url 'facebook' %}" class="social-icon">
-                                    <i class="fab fa-facebook-f"></i>
-                                </a>
+                                {% endif %} {% endcomment %}
+
+{% comment %} 
+                               {% if 'instagram' in socialaccount.providers %}
+                                    <a href="{% provider_login_url 'instagram' %}" class="social-icon">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
+                               {% endif %} {% endcomment %}
+
+
+                               {% comment %} {% if  'facebook' in socialaccount.providers %}
+                                    <a href="{% provider_login_url 'facebook' %}" class="social-icon">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                {% endif %} {% endcomment %}
 
                             </div>
                     </form>
@@ -87,16 +97,32 @@
                         <p class="social-text">Ou connectez-vous avec les plateformes sociales</p>
 
                         <div class="social-media">
-                            
-                            <a href="#" class="social-icon">
+
+                            <a href="{% provider_login_url 'google' %}" class="social-icon">
                                 <i class="fab fa-google"></i>
                             </a>
 
-                            
+                            {% if 'linkedin_oauth2' in socialaccount.providers %}
 
-                            <a href="#" class="social-icon">
-                                <i class="fab fa-linkedin-in"></i>
-                            </a>
+                                <a href="{% provider_login_url 'linkedin_oauth2' %}" class="social-icon">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+
+                            {% endif %}
+
+
+                           {% if 'instagram' in socialaccount.providers %}
+                                <a href="{% provider_login_url 'instagram' %}" class="social-icon">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                           {% endif %}
+
+
+                           {% if  'facebook' in socialaccount.providers %}
+                                <a href="{% provider_login_url 'facebook' %}" class="social-icon">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            {% endif %}
 
                         </div>
                     </form>

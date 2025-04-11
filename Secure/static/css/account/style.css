@@ -1,0 +1,40 @@
+/* Conteneur principal */
+.auth-container {
+    max-width: 400px;
+    margin: 60px auto;
+    background: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Titres */
+.auth-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Paragraphe */
+.auth-container p {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 30px;
+}
+
+/* Bouton */
+.auth-container button {
+    background-color: #5995fd;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease;
+}
+
+.auth-container button:hover {
+    background-color: #4178f2;
+}

@@ -1,13 +1,14 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-
+from django.urls import reverse_lazy
 
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+LOGIN_REDIRECT_URL = reverse_lazy("home")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -46,11 +47,14 @@ INSTALLED_APPS = [
 ]
 
 
-AUTHENTICATION_BACKENDS = [# Needed to login by username in Django admin, regardless of `allauth`
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
     # `allauth` specific authentication methods, such as login by email
     'allauth.account.auth_backends.AuthenticationBackend',
-    ]
+]
 
 
 # Provider specific settings
@@ -60,32 +64,32 @@ AUTHENTICATION_BACKENDS = [# Needed to login by username in Django admin, regard
 #         # (``socialaccount`` app) containing the required client
 #         # credentials, or list them here:
 #         'APP': {
-#             'client_id': '123',
-#             'secret': '456',
+#             'client_id': '',
+#             'secret': '',
 #             'key': ''
 #         }
 #     }, 
 #     'facebook':{
 #         # credentials, or list them here:
 #         'APP': {
-#             'client_id': '123',
-#             'secret': '456',
+#             'client_id': '',
+#             'secret': '',
 #             'key': ''
 #         }
 #     },
 #     'instagram':{
 #         # credentials, or list them here:
 #         'APP': {
-#             'client_id': '123',
-#             'secret': '456',
+#             'client_id': '',
+#             'secret': '',
 #             'key': ''
 #         }
 #     },
 #     'linkedin':{
 #         # credentials, or list them here:
 #         'APP': {
-#             'client_id': '123',
-#             'secret': '456',
+#             'client_id': '',
+#             'secret': '',
 #             'key': ''
 #         }
 #     },  
@@ -164,14 +168,26 @@ DEFAULT_FROM_MAIL = EMAIL_HOST_USER
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
-AUTH_PASSWORD_VALIDATORS = os.getenv("AUTH_PASSWORD_VALIDATORS")
-
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
 
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-en'
+LANGUAGE_CODE = 'fr-fr'
 
 TIME_ZONE = 'UTC'
 
@@ -184,6 +200,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / "Secure/static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
