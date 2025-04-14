@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Réinitialiser le mot de passe</title>
+
+  <style>
+    body {
+      background-color: #111;
+      color: #ccc;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .container {
+      background: #222;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px #000;
+      text-align: center;
+      width: 320px;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+      background: #333;
+      color: #ccc;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #00aaff;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .message {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #0f0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Réinitialisation du mot de passe</h2>
+
+    <p>
+      Mot de passe oublié ? Saisissez votre adresse e-mail ci-dessous et nous vous enverrons 
+      les instructions pour en créer un nouveau.
+
+    </p>
+
+    <form method="POST" action="{% url 'sendmail' %}">
+      {% csrf_token %}
+      {{ form.email.errors }}
+      <input type="email" name="email" placeholder="Entrez votre adresse email" required />
+      <button type="submit">Réinitialiser mon mot de passe</button>
+    </form>
+
+    <p>
+      Si vous ne recevez pas d'e-mail, vérifiez d'abord vos spams. Si cela ne fonctionne pas, 
+      Envoyez-nous un e-mail (depuis l'adresse utilisée lors de votre inscription) 
+      à l'assistance <a href="py.com"> < py.com > </a>, en indiquant votre nom d'utilisateur ; nous essaierons de le retrouver pour vous.
+    </p>
+
+    {% if message %}
+      <p class="message">{{ message }}</p>
+    {% endif %}
+  </div>
+</body>
+</html>

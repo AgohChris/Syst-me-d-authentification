@@ -7,6 +7,9 @@ from .models import Profile
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 import random as rd
+import uuid
+from django.utils import timezone
+from datetime import timedelta
 # import ssl
 
 
@@ -56,6 +59,7 @@ def register(request):
         Profile.objects.create(user=user, code_activation=code)
         print(code)
         
+        
         Objet_email = "Activation de votre Compte Rafisto.ci"
         Corps_email = render_to_string("emails/activation.html", {"username": username,
                                                                   "code": code,
@@ -70,14 +74,6 @@ def register(request):
         # message_email.connection = message_email.get_connection()
         # message_email.connection.ssl_context = ssl._create_unverified_context()
         message_email.send()
-        
-        
-        # send_mail("Activation de votre compre PyDocs",
-        #           f"Voici votre code : \n Votre Code : {code}", 
-        #           "agohchris90@gmail.com",
-        #           [email],
-        #           fail_silently=False
-        #         )
         
         messages.success(request, f"Un code d'activation a été envoyé à {email}")
         return redirect("activate")
@@ -141,7 +137,7 @@ def SignIn(request):
                 messages.error(request, "Votre compte n'est pas encore activé. Vérifiez votre email")
                 return redirect("loginRegister")
             login(request, user)
-            messages.success(request, "Connxion réussie.")
+            messages.success(request, "Connexion réussie.")
             return redirect("home")
         else:
             messages.error(request, "Erreur lor de l'authentifiaction")
@@ -155,3 +151,61 @@ def deconnection(request):
     logout(request)
     messages.success(request,"Déconnecté")
     return render(request, "loginRegister.html")
+
+
+
+def demamde_reinital(request):
+    if request.method == "POST":
+        email = request.POST.get("email").lower()
+
+        try:
+            user= User.objects.get(email=email)
+            profile = Profile.objects.get(user)
+
+
+            token = str(uuid.uuid4())
+            profile.reset_token = token
+            profile.reset_token_created_at = timezone.now()
+            profile.save()
+
+            url_de_reinitialisation = f"http://localhost:8000/reset-password/{token}/"
+
+            Objet_email = "Réinitialisation de votre mot de passe"
+            Corps_email = render_to_string("emails/mdprest.html", {
+                    "username":user.username,
+                    "url_de_reinitialisation" : url_de_reinitialisation
+            })
+
+            message_email = EmailMessage(
+            Objet_email, Corps_email, "agohchris90@gmail.com", [email]
+        )
+            message_email.content_subtype = "html"
+            message_email.send()
+
+
+            messages.success(request, f"Un lien d'activation a été envoyé à {email}")
+            return redirect("resetmsg")
+        
+        
+        
+        except User.DoesNotExist:
+            messages.error(request, "Cet email n'est lié a aucun utlisateur")
+            return redirect("emailenter")
+        
+
+    return render(request, "emailenter.html")
+
+
+
+def emailenter(request):
+
+    return render(request, "emailenter.html")
+
+
+def resetpassword(request):
+
+    return render(request, "newpass.html")
+
+
+def resetmsg(request):
+    return render(request, "resetmsg.html")

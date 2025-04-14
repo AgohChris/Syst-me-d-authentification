@@ -50,27 +50,27 @@
                                     <i class="fab fa-google"></i>
                                 </a>
 
-                                {% comment %} {% if 'linkedin_oauth2' in socialaccount.providers %}
+                                {% if 'linkedin_oauth2' in socialaccount.providers %}
 
                                     <a href="{% provider_login_url 'linkedin_oauth2' %}" class="social-icon">
                                         <i class="fab fa-linkedin-in"></i>
                                     </a>
 
-                                {% endif %} {% endcomment %}
+                                {% endif %}
 
-{% comment %} 
-                               {% if 'instagram' in socialaccount.providers %}
+                                
+                                {% if 'instagram' in socialaccount.providers %}
                                     <a href="{% provider_login_url 'instagram' %}" class="social-icon">
                                         <i class="fab fa-instagram"></i>
                                     </a>
-                               {% endif %} {% endcomment %}
+                                {% endif %}
 
 
-                               {% comment %} {% if  'facebook' in socialaccount.providers %}
+                                 {% if  'facebook' in socialaccount.providers %}
                                     <a href="{% provider_login_url 'facebook' %}" class="social-icon">
                                         <i class="fab fa-facebook-f"></i>
                                     </a>
-                                {% endif %} {% endcomment %}
+                                {% endif %}
 
                             </div>
                     </form>
@@ -95,6 +95,24 @@
 
                         <input type="submit" value="Se connecter" class="btn solid" />
                         <p class="social-text">Ou connectez-vous avec les plateformes sociales</p>
+
+                        <style>
+                            .forgot-link {
+                                display: inline-block;
+                                margin-top: 10px;
+                                color: #ff4b2b; /* Rouge orangé stylé */
+                                text-decoration: none;
+                                font-weight: 500;
+                                transition: all 0.3s ease;
+                                }
+
+                            .forgot-link:hover {
+                                color: #ff3a1a;
+                                text-decoration: underline;
+                                }
+
+                        </style>
+
 
                         <div class="social-media">
 
@@ -125,7 +143,20 @@
                             {% endif %}
 
                         </div>
+
+                        <a href="{% url 'emailenter' %}" class="forgot-link">
+                            <i class="fas fa-unlock-alt"></i> 
+                            J'ai oublié mon mot de passe
+                        </a>
+
+                        
+                        
                     </form>
+
+                    
+                    {% if messages %}
+                        <p class="messages"> {{ messages }} </p>
+                    {% endif %}
 
                
 

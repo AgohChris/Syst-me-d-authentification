@@ -19,6 +19,9 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://a50b25ac89e50d4790eee64416d681df.serveo.net'
+]
 ALLOWED_HOSTS = [
     '*'
 ]
