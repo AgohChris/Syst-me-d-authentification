@@ -55,31 +55,44 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Réinitialisation du mot de passe</h2>
 
-    <p>
-      Mot de passe oublié ? Saisissez votre adresse e-mail ci-dessous et nous vous enverrons 
-      les instructions pour en créer un nouveau.
+      <div class="container">
+          <h2>Réinitialisation du mot de passe</h2>
 
-    </p>
 
-    <form method="POST" action="{% url 'sendmail' %}">
-      {% csrf_token %}
-      {{ form.email.errors }}
-      <input type="email" name="email" placeholder="Entrez votre adresse email" required />
-      <button type="submit">Réinitialiser mon mot de passe</button>
-    </form>
 
-    <p>
-      Si vous ne recevez pas d'e-mail, vérifiez d'abord vos spams. Si cela ne fonctionne pas, 
-      Envoyez-nous un e-mail (depuis l'adresse utilisée lors de votre inscription) 
-      à l'assistance <a href="py.com"> < py.com > </a>, en indiquant votre nom d'utilisateur ; nous essaierons de le retrouver pour vous.
-    </p>
+          <p>
+            Mot de passe oublié ? Saisissez votre adresse e-mail ci-dessous et nous vous enverrons 
+            les instructions pour en créer un nouveau.
 
-    {% if message %}
-      <p class="message">{{ message }}</p>
-    {% endif %}
-  </div>
+          </p>
+
+
+
+          <form method="POST" action="{% url 'demande_reset_password' %}">
+            {% csrf_token %}
+            {{ form.email.errors }}
+            <input type="email" name="email" placeholder="Entrez votre adresse email" required />
+            <button type="submit">Réinitialiser mon mot de passe</button>
+          </form>
+
+
+
+          <p>
+            Si vous ne recevez pas d'e-mail, vérifiez d'abord vos spams. Si cela ne fonctionne pas, 
+            Envoyez-nous un e-mail (depuis l'adresse utilisée lors de votre inscription) 
+            à l'assistance <a href="py.com"> < py.com > </a>, en indiquant votre nom d'utilisateur ; nous essaierons de le retrouver pour vous.
+          </p>
+
+
+
+        {% if messages %}
+ 
+          <p class="messages {{ messages.tags }}">{{ message }}</p>
+
+        {% endif %}
+        
+
+      </div>
 </body>
 </html>

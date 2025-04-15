@@ -58,41 +58,13 @@
 </head>
 <body>
     <div class="container">
-        <form method="post" action="">
-            <h2>Définir un nouveau mot de passe</h2>
-            <input type="password" id="password" name="password"  placeholder="Nouveau mot de passe" />
-            <input type="password" id="confirm" name="password1" placeholder="Confirmer le mot de passe" />
-            <button onclick="validerMotDePasse()">Réinitialiser le mot de passe</button>
-            <p class="message" id="msgSucces">✅ Mot de passe changé avec succès !</p>
-        </form>
+      <form method="post" action="{% url 'verification_code_reset' email=email %}">
+        {% csrf_token %}
+        <h2>Entrez le mot de passe a 6 chiffres envoyé à votre adresse mail</h2>
+        <input type="text" name="code" placeholder="Entrez le code à 6 chiffres" required />
+        <button type="submit">Valider le code</button>
+    </form>    
     </div>
-
-  <script>
-    function validerMotDePasse() {
-      const pwd = document.getElementById("password").value;
-      const confirm = document.getElementById("confirm").value;
-      const msg = document.getElementById("msgSucces");
-
-      if (!pwd || !confirm) {
-        alert("Veuillez remplir les deux champs.");
-        return;
-      }
-
-      if (pwd !== confirm) {
-        alert("Les mots de passe ne correspondent pas !");
-        return;
-      }
-
-      if (pwd.length < 6) {
-        alert("Le mot de passe doit contenir au moins 6 caractères.");
-        return;
-      }
-
-      // Appel backend ici si besoin
-      msg.style.display = "block";
-    }
-  </script>
-
   
 </body>
 </html>

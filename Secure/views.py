@@ -7,9 +7,9 @@ from .models import Profile
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 import random as rd
-import uuid
 from django.utils import timezone
-from datetime import timedelta
+from django.contrib.auth.hashers import make_password
+from django.urls import reverse
 # import ssl
 
 
@@ -43,9 +43,9 @@ def register(request):
             return redirect("loginRegister")
 
     
-        if User.objects.filter(email=email).exists():
-            messages.error(request, "Cet email est déja utilisé")   
-            return redirect("loginRegister")
+        # if User.objects.filter(email=email).exists():
+        #     messages.error(request, "Cet email est déja utilisé")   
+        #     return redirect("loginRegister")
 
         
         user = User.objects.create_user(username=username, email=email, password=password)
@@ -154,58 +154,154 @@ def deconnection(request):
 
 
 
-def demamde_reinital(request):
+
+
+#Section de Reinitialisation
+
+def demande_reset_mot_de_passe(request):
     if request.method == "POST":
         email = request.POST.get("email").lower()
 
         try:
-            user= User.objects.get(email=email)
-            profile = Profile.objects.get(user)
+            user = User.objects.get(email=email)
+            profile = Profile.objects.get(user=user)
 
-
-            token = str(uuid.uuid4())
-            profile.reset_token = token
-            profile.reset_token_created_at = timezone.now()
+            # Générer un code à 6 chiffres
+            code = str(rd.randint(100000, 999999))
+            profile.reset_code = code
+            profile.reset_code_created_at = timezone.now()
+            profile.code_verified = False  # Remise à zéro
             profile.save()
 
-            url_de_reinitialisation = f"http://localhost:8000/reset-password/{token}/"
-
-            Objet_email = "Réinitialisation de votre mot de passe"
-            Corps_email = render_to_string("emails/mdprest.html", {
-                    "username":user.username,
-                    "url_de_reinitialisation" : url_de_reinitialisation
+            # Email de réinitialisation
+            objet_email = "Réinitialisation de votre mot de passe"
+            corps_email = render_to_string("emails/code_reinitialisation.html", {
+                "username": user.username,
+                "code": code,
             })
 
             message_email = EmailMessage(
-            Objet_email, Corps_email, "agohchris90@gmail.com", [email]
-        )
+                objet_email,
+                corps_email,
+                "agohchris90@gmail.com",
+                [email]
+            )
             message_email.content_subtype = "html"
             message_email.send()
 
+            messages.success(request, f"Un code à 6 chiffres a été envoyé à {email}")
+            return redirect("verification_code_reset", email=email) 
 
-            messages.success(request, f"Un lien d'activation a été envoyé à {email}")
-            return redirect("resetmsg")
-        
-        
-        
         except User.DoesNotExist:
-            messages.error(request, "Cet email n'est lié a aucun utlisateur")
-            return redirect("emailenter")
+            messages.error(request, "Aucun compte n’est associé à cet email.")
+            return redirect("demande_reset_password")
+
+    return render(request, "Verifmail.html")
+
+
+
+
+def verification_code_reset(request, email):
+    
+    try:
+        user = User.objects.get(email=email)
+        profile = Profile.objects.get(user=user)
+    except (User.DoesNotExist, Profile.DoesNotExist):
+        messages.error(request, "L'utilisateur est introuvable .")
+        return redirect("demande_reset_password")
+    
+
+    if request.method == "POST":
+        code_saisi = request.POST.get("code")
+
+        if not profile.reset_code:
+            messages.error(request, "Aucun code n'a été générer pour  cette adresse .")
+            return redirect("demande_reset_password")
+        
+        if not profile.is_code_valid():
+            messages.error(request, "Le code a expirer. Veuillez refaire votre demande.")
+            return redirect("demande_reset_password")
+        
+        if code_saisi != profile.reset_code:
+            messages.error(request, "le code saisi est invalide.")
+            return redirect("verification_code_reset", email=email)
         
 
-    return render(request, "emailenter.html")
+        # Si tout est alors on le laisse 
+        profile.code_verified = True
+        profile.save()
+        return redirect("changement_password", email=email)
+    
+    
+    return render(request, "verif_code_reset.html", {"email": email})
+    
 
 
 
-def emailenter(request):
+def Changement_de_mot_de_passe(request, email):
+    try:
+        user = User.objects.get(email=email)
+        profile = Profile.objects.get(user=user)
+        
+    except (User.DoesNotExist, Profile.DoesNotExist):
+        messages.error(request, "L'utilisateur est introuvable")
+        return redirect("loginRegister")
+    
+    if not profile.code_verified:
+        messages.error(request, "Le code est non verifier. Recomncencer tout ")
+        return redirect("demande_reset_password")
+    
 
-    return render(request, "emailenter.html")
+    if request.method == "POST":
+        mdp = request.POST.get("password")
+        mdp1 = request.POST.get("password1")
+
+        if mdp != mdp1 :
+            messages.error(request, "Les mots de passe ne correspondent pas")
+            return redirect("changement_password", email=email)
+        
+
+        #Verification de la securite du mdp
+        if len(mdp) < 6:
+            messages.error(request, "Le mot de passe doit contenir au moins 6 caractères")
+       
+        elif not any(char.isdigit() for char in mdp):
+            messages.error(request, "Le mot de passe doit contenir au moins 1 chiffre")
+
+        elif not any(char.isalpha() for char in mdp):
+            messages.error(request, "Le mot de passe doit contenir au moins une lettre")
+        
+        else:
+            user.password = make_password(mdp)
+            user.save()
 
 
-def resetpassword(request):
+            #Reinitialisation du profile
+            profile.reset_code = None
+            profile.reset_code_created_at = None
+            profile.code_verified = False
+            profile.save()
 
-    return render(request, "newpass.html")
 
+            #confirmReset.html
 
-def resetmsg(request):
-    return render(request, "resetmsg.html")
+            #Envoie du mail de confirmation 
+
+            Objet_email = "Mot de passe reinitialisé"
+            Corps_email = render_to_string("emails/code_reinitialisation.html", {"username": user.username,
+                                                                  })
+        
+        
+            message_email = EmailMessage(
+                Objet_email, Corps_email, "agohchris90@gmail.com", [email]
+            )
+            message_email.content_subtype = "html"
+            message_email.send()
+
+            messages.success(request, "Le Mot de passe est reset. vous pouvez vous connecter")
+            return redirect("loginRegister")
+    
+
+    return render(request, "nouveauMdp.html", {"email": email})
+
+        

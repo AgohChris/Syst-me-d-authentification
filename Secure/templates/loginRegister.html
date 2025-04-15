@@ -144,7 +144,7 @@
 
                         </div>
 
-                        <a href="{% url 'emailenter' %}" class="forgot-link">
+                        <a href="{% url 'demande_reset_password' %}" class="forgot-link">
                             <i class="fas fa-unlock-alt"></i> 
                             J'ai oublié mon mot de passe
                         </a>
@@ -153,10 +153,13 @@
                         
                     </form>
 
-                    
-                    {% if messages %}
-                        <p class="messages"> {{ messages }} </p>
-                    {% endif %}
+                    {% comment %} {% if messages %}
+                        <div class="messages">
+                            {% for message in messages %}
+                                <p class="message {{ message.tags }}">{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %} {% endcomment %}
 
                
 
@@ -164,7 +167,7 @@
 
                 
             </div>
-
+   
             <div class="panels-container">
                 <div class="panel left-panel">
                 <div class="content">
