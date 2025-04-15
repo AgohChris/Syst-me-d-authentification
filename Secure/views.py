@@ -288,7 +288,7 @@ def Changement_de_mot_de_passe(request, email):
             #Envoie du mail de confirmation 
 
             Objet_email = "Mot de passe reinitialisé"
-            Corps_email = render_to_string("emails/code_reinitialisation.html", {"username": user.username,
+            Corps_email = render_to_string("emails/confirmReset.html", {"username": user.username,
                                                                   })
         
         
